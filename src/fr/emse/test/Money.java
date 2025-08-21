@@ -17,9 +17,16 @@ class Money{
 		return fCurrency; 
 	} 
 	 
-	public Money add(Money m) { 
+/*	public Money add(Money m) { 
 		return new Money(amount() + m.amount(), currency()); 
 	}
+	*/
+	
+	public Money add(Money m) { 
+		if (m.currency().equals(currency())) 
+			return new Money(amount() + m.amount(), currency()); 
+			return new MoneyBag(this, m); 
+	} 
 	
 	@Override
 	public boolean equals(Object obj) {
