@@ -18,8 +18,8 @@ public class MoneyTest {
 	@Test 
 	public void testSimpleAdd() { 
 		Money expected = new Money(26, "CHF"); 
-		Money result = m12CHF.add(m14CHF); // exécution de la méthode testée 
-		assertTrue(expected.equals(result)); // comparaison @Test
+		IMoney result = m12CHF.add(m14CHF);     // exécution de la méthode testée
+        assertEquals(expected, result); // comparaison
 	}
 	
 	@Test 

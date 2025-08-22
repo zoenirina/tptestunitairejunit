@@ -20,14 +20,13 @@ class Money implements IMoney{
 /*	public Money add(Money m) { 
 		return new Money(amount() + m.amount(), currency()); 
 	}
-	
 	public Money add(Money m) { 
 		if (m.currency().equals(currency())) 
 			return new Money(amount() + m.amount(), currency()); 
 			return new MoneyBag(this, m); 
-	} 	
-	*/
-	
+	} 
+*/	
+
 	@Override
 	public boolean equals(Object obj) {
 	    if (this == obj) return true;
@@ -38,7 +37,22 @@ class Money implements IMoney{
 
 	public IMoney add(IMoney m) { 
 		return m.addMoney(this); 
-	} 
+	}
+
+    // Double dispatch : addition avec un Money
+    @Override
+    public IMoney addMoney(Money m) {
+        if (m.currency().equals(currency())) {
+            return new Money(amount() + m.amount(), currency());
+        }
+        return new MoneyBag(this, m);
+    }
+
+    // Double dispatch : addition avec un MoneyBag
+    @Override
+    public IMoney addMoneyBag(MoneyBag bag) {
+        return bag.addMoney(this); // délègue au MoneyBag
+    }
 
 	
 }

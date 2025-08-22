@@ -40,9 +40,25 @@ public class MoneyBag implements IMoney{
 	    return fMonies.equals(other.fMonies);
 	}
 
-	public IMoney add(IMoney m) { 
-		return m.addMoneyBag(this); 
-	} 
+	@Override
+    public IMoney add(IMoney m) {
+        return m.addMoneyBag(this);
+    }
+
+    @Override
+    public IMoney addMoney(Money m) {
+        return new MoneyBag(new Money[]{m}).addMoneyBag(this);
+    }
+
+    @Override
+    public IMoney addMoneyBag(MoneyBag bag) {
+        Money all[] = new Money[fMonies.size() + bag.fMonies.size()];
+        fMonies.toArray(all);
+        for (Money m : bag.fMonies) {
+            appendMoney(m);
+        }
+        return this;
+    }
 
 
 }
