@@ -36,11 +36,9 @@ class Money implements IMoney{
 	    return fAmount == money.fAmount && fCurrency.equals(money.fCurrency);
 	}
 
-	@Override
-	public IMoney add(IMoney aMoney) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public IMoney add(IMoney m) { 
+		return m.addMoney(this); 
+	} 
 
 	
 }

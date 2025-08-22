@@ -40,11 +40,9 @@ public class MoneyBag implements IMoney{
 	    return fMonies.equals(other.fMonies);
 	}
 
-	@Override
-	public IMoney add(IMoney aMoney) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public IMoney add(IMoney m) { 
+		return m.addMoneyBag(this); 
+	} 
 
 
 }
