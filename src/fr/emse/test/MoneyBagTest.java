@@ -35,10 +35,10 @@ public class MoneyBagTest {
 	
 	@Test 
 	public void testMixedSimpleAdd() { 
-	// [12 CHF] + [7 USD] == {[12 CHF][7 USD]} 
-	Money bag[] = { f12CHF, f7USD }; 
-	MoneyBag expected = new MoneyBag(bag); 
-	assertEquals(expected, f12CHF.add(f7USD)); 
+		// [12 CHF] + [7 USD] == {[12 CHF][7 USD]} 
+		Money bag[] = { f12CHF, f7USD }; 
+		MoneyBag expected = new MoneyBag(bag); 
+		assertEquals(expected, f12CHF.add(f7USD)); 
 	} 
 	
 	@Test
@@ -61,5 +61,14 @@ public class MoneyBagTest {
         MoneyBag expected = new MoneyBag(bag);
         assertEquals(expected, fMB1.add(fMB2));
     }
+    
+    @Test
+    public void testSimplifyToMoney() {
+        MoneyBag bag = new MoneyBag(f12CHF, f7USD);
+        IMoney result = bag.add(new Money(-12, "CHF")); // on annule les CHF
+        assertEquals(f7USD, result); // doit simplifier en Money(7, "USD")
+    }
+
+    
 
 }

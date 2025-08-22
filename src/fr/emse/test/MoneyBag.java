@@ -9,10 +9,25 @@ public class MoneyBag implements IMoney{
 		appendMoney(m1); 
 		appendMoney(m2); 
 	} 
+
+	MoneyBag(Money[] bag) {
+	    for (Money m : bag) {
+	        appendMoney(m);
+	    }
+	}
+
 	
-	MoneyBag(Money bag[]) { 
-		for (int i = 0; i < bag.length; i++) 
-		appendMoney(bag[i]); 
+	private IMoney simplify() {
+	    // Retirer les Money avec montant 0
+	    fMonies.removeIf(m -> m.amount() == 0);
+
+	    if (fMonies.isEmpty()) {
+	        return new Money(0, "CHF"); // ou une convention pour zéro
+	    }
+	    if (fMonies.size() == 1) {
+	        return fMonies.firstElement(); // retourne directement le Money
+	    }
+	    return this;
 	}
 	
 	private void appendMoney(Money m) { 
@@ -32,33 +47,58 @@ public class MoneyBag implements IMoney{
 		}
 	}
 	
-	@Override
+/*	@Override
 	public boolean equals(Object obj) {
 	    if (this == obj) return true;                  // même référence → égalité
 	    if (obj == null || getClass() != obj.getClass()) return false;
 	    MoneyBag other = (MoneyBag) obj;
 	    return fMonies.equals(other.fMonies);
+	}*/
+	
+	@Override
+	public boolean equals(Object obj) {
+	    if (this == obj) return true;
+	    if (!(obj instanceof MoneyBag)) return false;
+	    MoneyBag other = (MoneyBag) obj;
+
+	    if (fMonies.size() != other.fMonies.size()) return false;
+
+	    for (Money m : fMonies) {
+	        boolean found = false;
+	        for (Money om : other.fMonies) {
+	            if (m.equals(om)) { // utilise equals de Money
+	                found = true;
+	                break;
+	            }
+	        }
+	        if (!found) return false;
+	    }
+	    return true;
 	}
+
+
 
 	@Override
     public IMoney add(IMoney m) {
         return m.addMoneyBag(this);
     }
 
-    @Override
-    public IMoney addMoney(Money m) {
-        return new MoneyBag(new Money[]{m}).addMoneyBag(this);
-    }
+	@Override
+	public IMoney addMoney(Money m) {
+	    MoneyBag result = new MoneyBag(fMonies.toArray(new Money[0]));
+	    result.appendMoney(m);
+	    return result.simplify();
+	}
 
-    @Override
-    public IMoney addMoneyBag(MoneyBag bag) {
-        Money all[] = new Money[fMonies.size() + bag.fMonies.size()];
-        fMonies.toArray(all);
-        for (Money m : bag.fMonies) {
-            appendMoney(m);
-        }
-        return this;
-    }
+	@Override
+	public IMoney addMoneyBag(MoneyBag bag) {
+	    MoneyBag result = new MoneyBag(fMonies.toArray(new Money[0]));
+	    for (Money m : bag.fMonies) {
+	        result.appendMoney(m);
+	    }
+	    return result.simplify();
+	}
+
 
 
 }
